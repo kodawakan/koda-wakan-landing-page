@@ -5,20 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Koda Wakan - Waitlist</title>
   <meta name="description" content="Sua prática espiritual diária, com profundidade e sem dogmas." />
+  <!-- Favicon removido -->
   <style>
-    /* Reset e Box Sizing para melhor responsividade */
-    * {
-      box-sizing: border-box;
-    }
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Lato', Arial, Helvetica, sans-serif;
-      background: var(--white);
-      color: var(--dark);
-      min-height: 100vh;
-      overflow-x: hidden; /* Evita rolagem horizontal indesejada */
-    }
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Lora:wght@400;600;700&display=swap');
     :root {
       --white: #FDFCFB;
@@ -27,14 +15,19 @@
       --hope: #2E7D32;
       --hope-hover: #1B5E20;
       --success: #2E7D32;
-      --error-red: #e53935;
       --border: #CCCCCC;
       --placeholder: #9E9E9E;
       --max-content: 1100px;
       --max-paragraph: 700px;
       --section-space: 96px;
-      --golden-accent: #DAA520; /* Nova cor de destaque */
-      --golden-hover: #B8860B; /* Cor de hover para o dourado */
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Lato', Arial, Helvetica, sans-serif;
+      background: var(--white);
+      color: var(--dark);
+      min-height: 100vh;
     }
     body {
       display: flex;
@@ -126,7 +119,6 @@
       background: #fff;
       outline: none;
       transition: border 0.2s;
-      width: 100%; /* Garante que o input ocupe a largura total */
     }
     .waitlist-input:focus {
       border-color: var(--hope);
@@ -138,7 +130,7 @@
       color: var(--placeholder);
     }
     .waitlist-btn {
-      background: var(--golden-accent); /* Usando a nova cor */
+      background: var(--hope);
       color: #fff;
       font-family: 'Lato', Arial, sans-serif;
       font-weight: 700;
@@ -149,43 +141,29 @@
       cursor: pointer;
       transition: background 0.3s, transform 0.3s;
       margin-top: 4px;
-      width: 100%; /* Botão em largura total para mobile */
-    }
-    @media (min-width: 600px) {
-      .waitlist-btn {
-        width: auto; /* Ocupa a largura necessária em telas maiores */
-      }
     }
     .waitlist-btn:hover, .waitlist-btn:focus {
-      background: var(--golden-hover);
+      background: var(--hope-hover);
       transform: scale(1.03);
     }
     .waitlist-btn:disabled {
-      background: var(--golden-accent);
+      background: var(--hope);
       color: #fff;
       opacity: 0.6;
       cursor: not-allowed;
     }
-    .success-message,
-    .error-message {
+    .success-message {
+      color: var(--success);
       font-family: 'Lato', Arial, sans-serif;
       font-size: 16px;
       background: #fff;
       border-radius: 8px;
       padding: 16px 24px;
-      margin: 12px auto 0 auto;
+      margin: 32px auto 0 auto;
       max-width: 400px;
       box-shadow: 0 2px 8px #0001;
       text-align: center;
       font-weight: 500;
-      width: 100%;
-    }
-    .success-message {
-      color: var(--success);
-    }
-    .error-message {
-      color: var(--error-red);
-      border: 1px solid var(--error-red);
     }
     .section {
       background: var(--white);
@@ -253,13 +231,6 @@
       transform: translateY(-8px) scale(1.03);
       box-shadow: 0 6px 24px #0002;
     }
-    .card-icon {
-      margin-bottom: 24px;
-    }
-    .card-icon svg {
-      width: 64px;
-      height: 64px;
-    }
     .card-title {
       font-family: 'Lora', serif;
       font-size: 22px;
@@ -281,7 +252,7 @@
       font-size: 14px;
       margin-top: auto;
     }
-    /* Animações */
+    /* Animations */
     .fade-in {
       opacity: 0;
       animation: fadeIn 0.8s ease forwards;
@@ -300,20 +271,12 @@
     @keyframes slideUp {
       to { opacity: 1; transform: none; }
     }
-    @keyframes pulse {
-      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(218, 165, 32, 0.7); }
-      70% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(218, 165, 32, 0); }
-      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(218, 165, 32, 0); }
-    }
-    .waitlist-btn {
-      /* ... estilos existentes ... */
-      animation: pulse 2s infinite;
-    }
   </style>
 </head>
 <body>
   <main>
     <section class="hero fade-in">
+  <!-- Logotipo removido -->
       <h1>Sua prática espiritual diária, com profundidade e sem dogmas.</h1>
       <div class="subtitle">Para você que mantém a fé, mas se sente distante das instituições. Descubra uma nova forma de se conectar com os ensinamentos de amor, graça e perdão.</div>
       <div class="offer">✨ Entre na lista de espera e garanta condições especiais vitalícias como membro fundador.</div>
@@ -325,7 +288,6 @@
         <button type="submit" class="waitlist-btn">Quero meu benefício de fundador</button>
       </form>
       <div id="successMessage" class="success-message" style="display:none;"></div>
-      <div id="errorMessage" class="error-message" style="display:none;"></div>
     </section>
     <section class="section slide-up" style="animation-delay:0.2s;">
       <div class="container">
@@ -339,39 +301,14 @@
         <p class="section-paragraph">O Koda Wakan é uma futura plataforma web que criará meditações personalizadas para você. Com base nos ensinamentos simples de Jesus – amor, perdão e graça – nossa IA gerará uma prática diária única em texto, voz e música, livre de dogmas, e alinhada com sua busca por autenticidade.</p>
         <div class="cards">
           <div class="card stagger-1">
-            <div class="card-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-              </svg>
-            </div>
             <div class="card-title">Informe sua intenção</div>
             <div class="card-text">Diga-nos sobre o que você precisa meditar hoje.</div>
           </div>
           <div class="card stagger-2">
-            <div class="card-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mic">
-                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                <line x1="12" x2="12" y1="19" y2="22"/>
-              </svg>
-            </div>
             <div class="card-title">Receba sua prática</div>
             <div class="card-text">Em instantes, uma meditação completa e exclusiva é criada para você.</div>
           </div>
           <div class="card stagger-3">
-            <div class="card-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun">
-                <circle cx="12" cy="12" r="4"/>
-                <path d="M12 2v2"/>
-                <path d="M12 20v2"/>
-                <path d="M4.93 4.93l1.41 1.41"/>
-                <path d="M17.66 17.66l1.41 1.41"/>
-                <path d="M2 12h2"/>
-                <path d="M20 12h2"/>
-                <path d="M4.93 19.07l1.41-1.41"/>
-                <path d="M17.66 6.34l1.41-1.41"/>
-              </svg>
-            </div>
             <div class="card-title">Inicie sua jornada</div>
             <div class="card-text">Ouça, reflita e construa um hábito espiritual profundo e pessoal.</div>
           </div>
@@ -390,39 +327,33 @@
           <button type="submit" class="waitlist-btn">Garantir minha condição de fundador</button>
         </form>
         <div id="successMessage2" class="success-message" style="display:none;"></div>
-        <div id="errorMessage2" class="error-message" style="display:none;"></div>
       </div>
     </section>
   </main>
   <footer class="footer">© 2025 Koda Wakan</footer>
   <script>
-    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxz3pKlcET4T1gahr5zTGCRN44qEen166pQfUCfBi7Scw-1Esob72NlmH2eQMV2jJMSGw/exec";
-    
+    // Google Apps Script URL
+    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzOzP_D92i0wzaIAb-5i6xA-ch-AEDRSceVR0h6SMU6UWfQlf9tXpdBBsZNU2sPrhEK1Q/exec";
+
     function validateEmail(email) {
-      // Validates the email format.
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
     function sanitizeName(name) {
-      // Sanitizes the name input to prevent malicious code and format it correctly.
       return name.trim().replace(/\s+/g, ' ').replace(/[^\p{L} .'-]/gu, '').slice(0, 40);
     }
-    function handleForm(formId, nameId, emailId, successId, errorId, buttonText) {
-      // Handles the form submission for a specific form ID.
+    function handleForm(formId, nameId, emailId, successId, buttonText) {
       const form = document.getElementById(formId);
       const nameInput = document.getElementById(nameId);
       const emailInput = document.getElementById(emailId);
       const successMsg = document.getElementById(successId);
-      const errorMsg = document.getElementById(errorId);
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        successMsg.style.display = 'none';
-        errorMsg.style.display = 'none';
+        // Reset errors
         nameInput.classList.remove('error');
         emailInput.classList.remove('error');
         let valid = true;
         const name = sanitizeName(nameInput.value);
         const email = emailInput.value.trim();
-        // Validates the name and email fields.
         if (!name) {
           nameInput.classList.add('error');
           valid = false;
@@ -431,48 +362,38 @@
           emailInput.classList.add('error');
           valid = false;
         }
-        if (!valid) {
-          errorMsg.textContent = 'Por favor, verifique os campos em vermelho.';
-          errorMsg.style.display = 'block';
-          return;
-        }
-        // Disables the button and shows a loading message.
+        if (!valid) return;
+        // Disable button
         const btn = form.querySelector('button[type="submit"]');
         btn.disabled = true;
         btn.textContent = 'Enviando...';
+        // Send to Google Sheets
         try {
-          // Sends the form data to the Google Sheets URL.
           const res = await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email })
           });
           if (res.ok) {
-            // Handles success: hides the form and shows a success message.
             form.style.display = 'none';
             successMsg.textContent = `Obrigado, ${name}! Seu e-mail foi adicionado com sucesso. Manteremos você informado(a).`;
             successMsg.style.display = 'block';
           } else {
-            // Handles failure: re-enables the button and shows an error message.
             btn.disabled = false;
             btn.textContent = buttonText;
-            errorMsg.textContent = 'Erro ao enviar. Tente novamente.';
-            errorMsg.style.display = 'block';
+            alert('Erro ao enviar. Tente novamente.');
           }
         } catch {
-          // Handles connection errors.
           btn.disabled = false;
           btn.textContent = buttonText;
-          errorMsg.textContent = 'Erro de conexão. Tente novamente.';
-          errorMsg.style.display = 'block';
+          alert('Erro de conexão. Tente novamente.');
         }
       });
     }
-    // Initializes the form handlers for both forms on the page.
-    handleForm('waitlistForm', 'name', 'email', 'successMessage', 'errorMessage', 'Quero meu benefício de fundador');
-    handleForm('waitlistForm2', 'name2', 'email2', 'successMessage2', 'errorMessage2', 'Garantir minha condição de fundador');
+    handleForm('waitlistForm', 'name', 'email', 'successMessage', 'Quero meu benefício de fundador');
+    handleForm('waitlistForm2', 'name2', 'email2', 'successMessage2', 'Garantir minha condição de fundador');
+    // Animations on load
     window.addEventListener('DOMContentLoaded', function() {
-      // Animates the elements on page load.
       document.querySelectorAll('.fade-in').forEach(el => el.style.opacity = 1);
       document.querySelectorAll('.slide-up').forEach(el => el.style.opacity = 1);
       document.querySelectorAll('.stagger-1').forEach(el => el.style.opacity = 1);
