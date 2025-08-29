@@ -5,8 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Koda Wakan - Waitlist</title>
   <meta name="description" content="Sua prática espiritual diária, com profundidade e sem dogmas." />
-  <!-- Favicon removido -->
   <style>
+    /* Reset e Box Sizing para melhor responsividade */
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Lato', Arial, Helvetica, sans-serif;
+      background: var(--white);
+      color: var(--dark);
+      min-height: 100vh;
+      overflow-x: hidden; /* Evita rolagem horizontal indesejada */
+    }
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Lora:wght@400;600;700&display=swap');
     :root {
       --white: #FDFCFB;
@@ -21,14 +33,6 @@
       --max-content: 1100px;
       --max-paragraph: 700px;
       --section-space: 96px;
-    }
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Lato', Arial, Helvetica, sans-serif;
-      background: var(--white);
-      color: var(--dark);
-      min-height: 100vh;
     }
     body {
       display: flex;
@@ -120,6 +124,7 @@
       background: #fff;
       outline: none;
       transition: border 0.2s;
+      width: 100%; /* Garante que o input ocupe a largura total */
     }
     .waitlist-input:focus {
       border-color: var(--hope);
@@ -142,6 +147,12 @@
       cursor: pointer;
       transition: background 0.3s, transform 0.3s;
       margin-top: 4px;
+      width: 100%; /* Botão em largura total para mobile */
+    }
+    @media (min-width: 600px) {
+      .waitlist-btn {
+        width: auto; /* Ocupa a largura necessária em telas maiores */
+      }
     }
     .waitlist-btn:hover, .waitlist-btn:focus {
       background: var(--hope-hover);
@@ -261,7 +272,7 @@
       font-size: 14px;
       margin-top: auto;
     }
-    /* Animations */
+    /* Animações */
     .fade-in {
       opacity: 0;
       animation: fadeIn 0.8s ease forwards;
@@ -342,40 +353,29 @@
   </main>
   <footer class="footer">© 2025 Koda Wakan</footer>
   <script>
-    // URL do Google Apps Script
     const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbzOzP_D92i0wzaIAb-5i6xA-ch-AEDRSceVR0h6SMU6UWfQlf9tXpdBBsZNU2sPrhEK1Q/exec";
-
-    // Função de validação de e-mail usando expressão regular
+    
     function validateEmail(email) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
-    // Função para sanitizar e limitar o nome
     function sanitizeName(name) {
       return name.trim().replace(/\s+/g, ' ').replace(/[^\p{L} .'-]/gu, '').slice(0, 40);
     }
-    // Função para lidar com o envio de formulários
     function handleForm(formId, nameId, emailId, successId, errorId, buttonText) {
       const form = document.getElementById(formId);
       const nameInput = document.getElementById(nameId);
       const emailInput = document.getElementById(emailId);
       const successMsg = document.getElementById(successId);
       const errorMsg = document.getElementById(errorId);
-
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        
-        // Esconde mensagens de erro e sucesso anteriores
         successMsg.style.display = 'none';
         errorMsg.style.display = 'none';
-
-        // Remove classes de erro
         nameInput.classList.remove('error');
         emailInput.classList.remove('error');
-
         let valid = true;
         const name = sanitizeName(nameInput.value);
         const email = emailInput.value.trim();
-
         if (!name) {
           nameInput.classList.add('error');
           valid = false;
@@ -384,26 +384,20 @@
           emailInput.classList.add('error');
           valid = false;
         }
-
         if (!valid) {
           errorMsg.textContent = 'Por favor, verifique os campos em vermelho.';
           errorMsg.style.display = 'block';
           return;
         }
-
-        // Desabilita o botão para evitar múltiplos envios
         const btn = form.querySelector('button[type="submit"]');
         btn.disabled = true;
         btn.textContent = 'Enviando...';
-
-        // Envia para o Google Sheets
         try {
           const res = await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email })
           });
-
           if (res.ok) {
             form.style.display = 'none';
             successMsg.textContent = `Obrigado, ${name}! Seu e-mail foi adicionado com sucesso. Manteremos você informado(a).`;
@@ -422,12 +416,8 @@
         }
       });
     }
-
-    // Inicializa os formulários
     handleForm('waitlistForm', 'name', 'email', 'successMessage', 'errorMessage', 'Quero meu benefício de fundador');
     handleForm('waitlistForm2', 'name2', 'email2', 'successMessage2', 'errorMessage2', 'Garantir minha condição de fundador');
-
-    // Animações na carga da página
     window.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.fade-in').forEach(el => el.style.opacity = 1);
       document.querySelectorAll('.slide-up').forEach(el => el.style.opacity = 1);
