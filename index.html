@@ -152,7 +152,7 @@
       opacity: 0.6;
       cursor: not-allowed;
     }
-    .success-message {
+    .success-message, .error-message {
       color: var(--success);
       font-family: 'Lato', Arial, sans-serif;
       font-size: 16px;
@@ -164,6 +164,9 @@
       box-shadow: 0 2px 8px #0001;
       text-align: center;
       font-weight: 500;
+    }
+    .error-message {
+      color: #e53935;
     }
     .section {
       background: var(--white);
@@ -288,6 +291,7 @@
         <button type="submit" class="waitlist-btn">Quero meu benefício de fundador</button>
       </form>
       <div id="successMessage" class="success-message" style="display:none;"></div>
+      <div id="errorMessage" class="error-message" style="display:none;"></div>
     </section>
     <section class="section slide-up" style="animation-delay:0.2s;">
       <div class="container">
@@ -327,6 +331,7 @@
           <button type="submit" class="waitlist-btn">Garantir minha condição de fundador</button>
         </form>
         <div id="successMessage2" class="success-message" style="display:none;"></div>
+        <div id="errorMessage2" class="error-message" style="display:none;"></div>
       </div>
     </section>
   </main>
@@ -346,11 +351,15 @@
       const nameInput = document.getElementById(nameId);
       const emailInput = document.getElementById(emailId);
       const successMsg = document.getElementById(successId);
+      const errorMsg = document.getElementById(formId.replace('waitlistForm', 'errorMessage'));
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        // Reset errors
+        // Reset messages and errors
         nameInput.classList.remove('error');
         emailInput.classList.remove('error');
+        successMsg.style.display = 'none';
+        errorMsg.style.display = 'none';
+
         let valid = true;
         const name = sanitizeName(nameInput.value);
         const email = emailInput.value.trim();
@@ -374,6 +383,9 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email })
           });
+
+          console.log('Fetch response:', res); // Log da resposta para depuração
+
           if (res.ok) {
             form.style.display = 'none';
             successMsg.textContent = `Obrigado, ${name}! Seu e-mail foi adicionado com sucesso. Manteremos você informado(a).`;
@@ -381,12 +393,15 @@
           } else {
             btn.disabled = false;
             btn.textContent = buttonText;
-            alert('Erro ao enviar. Tente novamente.');
+            errorMsg.textContent = 'Erro ao enviar. Verifique sua conexão e tente novamente.';
+            errorMsg.style.display = 'block';
           }
-        } catch {
+        } catch(e) {
+          console.error('Connection error:', e); // Log do erro de conexão
           btn.disabled = false;
           btn.textContent = buttonText;
-          alert('Erro de conexão. Tente novamente.');
+          errorMsg.textContent = 'Erro de conexão. Por favor, verifique a URL do Google Apps Script.';
+          errorMsg.style.display = 'block';
         }
       });
     }
