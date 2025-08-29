@@ -338,12 +338,15 @@
   <footer class="footer">© 2025 Koda Wakan</footer>
   <script>
     // URL do Google Apps Script
+    // NOTE: Esta URL deve ser a URL de implantação do seu Google Apps Script com as permissões corretas
     const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxnxAFl_GJnLG_2oVtFYy_nke5JFv5Ff9rCfYEyfC8fiDOhK6F_sX-_4ufp7NGLLcyVKA/exec";
 
     function validateEmail(email) {
+      // Valida o formato do e-mail
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
     function sanitizeName(name) {
+      // Limpa o nome, removendo espaços extras e caracteres não-letras
       return name.trim().replace(/\s+/g, ' ').replace(/[^\p{L} .'-]/gu, '').slice(0, 40);
     }
     function handleForm(formId, nameId, emailId, successId, buttonText) {
@@ -352,9 +355,11 @@
       const emailInput = document.getElementById(emailId);
       const successMsg = document.getElementById(successId);
       const errorMsg = document.getElementById(formId.replace('waitlistForm', 'errorMessage'));
+      
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        // Reset messages and errors
+        
+        // Reseta mensagens e classes de erro
         nameInput.classList.remove('error');
         emailInput.classList.remove('error');
         successMsg.style.display = 'none';
@@ -363,6 +368,8 @@
         let valid = true;
         const name = sanitizeName(nameInput.value);
         const email = emailInput.value.trim();
+
+        // Validação básica do formulário
         if (!name) {
           nameInput.classList.add('error');
           valid = false;
@@ -372,42 +379,51 @@
           valid = false;
         }
         if (!valid) return;
-        // Disable button
+        
+        // Desativa o botão enquanto o envio está em andamento
         const btn = form.querySelector('button[type="submit"]');
         btn.disabled = true;
         btn.textContent = 'Enviando...';
-        // Send to Google Sheets
+        
+        // Envia dados para o Google Apps Script
         try {
+          // Requisição com mode 'cors' para receber a resposta real do servidor.
           const res = await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify({ name, email })
           });
 
-          console.log('Fetch response:', res); // Log da resposta para depuração
-
           if (res.ok) {
+            // Se a resposta for bem-sucedida, esconde o formulário e mostra a mensagem de sucesso
             form.style.display = 'none';
             successMsg.textContent = `Obrigado, ${name}! Seu e-mail foi adicionado com sucesso. Manteremos você informado(a).`;
             successMsg.style.display = 'block';
           } else {
-            btn.disabled = false;
-            btn.textContent = buttonText;
-            errorMsg.textContent = 'Erro ao enviar. Verifique sua conexão e tente novamente.';
-            errorMsg.style.display = 'block';
+            // Se a resposta não for ok, lança um erro para ser capturado no bloco catch
+            throw new Error(`O servidor respondeu com o status: ${res.status}`);
           }
         } catch(e) {
-          console.error('Connection error:', e); // Log do erro de conexão
+          // Captura erros de rede ou do servidor e exibe uma mensagem de erro
+          console.error('Connection or Server Error:', e);
+          errorMsg.textContent = 'Erro ao enviar. Verifique sua conexão e a configuração do Google Apps Script.';
+          errorMsg.style.display = 'block';
+        } finally {
+          // Garante que o botão seja reativado após a tentativa de envio
           btn.disabled = false;
           btn.textContent = buttonText;
-          errorMsg.textContent = 'Erro de conexão. Por favor, verifique a URL do Google Apps Script.';
-          errorMsg.style.display = 'block';
         }
       });
     }
+
+    // Configura os manipuladores de formulário para os dois formulários na página
     handleForm('waitlistForm', 'name', 'email', 'successMessage', 'Quero meu benefício de fundador');
     handleForm('waitlistForm2', 'name2', 'email2', 'successMessage2', 'Garantir minha condição de fundador');
-    // Animations on load
+
+    // Adiciona animações de fade-in e slide-up ao carregar a página
     window.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.fade-in').forEach(el => el.style.opacity = 1);
       document.querySelectorAll('.slide-up').forEach(el => el.style.opacity = 1);
